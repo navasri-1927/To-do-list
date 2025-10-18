@@ -69,3 +69,13 @@ li button {
   border-radius: 4px;
   cursor: pointer;
 }
+ @media (max-width: 650px) {
+      .todo-container {
+        padding: 20px;
+      }
+      .task-buttons button {
+        margin-left: 3px;
+        padding: 2px 6px;
+      }
+    }
+
