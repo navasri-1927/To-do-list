@@ -1,31 +1,58 @@
-function addTask() {
-  const taskInput = document.getElementById("taskInput");
-  const taskText = taskInput.value.trim();
 
-  if (taskText === "") {
-    alert("Please enter a task!");
-    return;
-  }
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
 
-  const li = document.createElement("li");
+    function addTask() {
+      const taskText = taskInput.value.trim();
+      if (taskText === "") return;
 
-  li.textContent = taskText;
+      const li = document.createElement("li");
 
-  // Toggle completed
-  li.addEventListener("click", function () {
-    li.classList.toggle("completed");
-  });
+      const span = document.createElement("span");
+      span.textContent = taskText;
+      span.style.flex = "1";
 
-  // Delete button
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Delete";
-  deleteBtn.addEventListener("click", function (e) {
-    e.stopPropagation(); // Prevent li click
-    li.remove();
-  });
+      const actions = document.createElement("div");
+      actions.classList.add("actions");
 
-  li.appendChild(deleteBtn);
-  document.getElementById("taskList").appendChild(li);
+      const completeBtn = document.createElement("button");
+      completeBtn.textContent = "✔";
+      completeBtn.className = "complete-btn";
+      completeBtn.onclick = () => {
+        li.classList.toggle("completed");
+      };
 
-  taskInput.value = ""; // Clear input
-}
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "✏";
+      editBtn.className = "edit-btn";
+      editBtn.onclick = () => {
+        const newText = prompt("Edit task:", span.textContent);
+        if (newText !== null && newText.trim() !== "") {
+          span.textContent = newText.trim();
+        }
+      };
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "🗑";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.onclick = () => {
+        taskList.removeChild(li);
+      };
+
+      actions.appendChild(completeBtn);
+      actions.appendChild(editBtn);
+      actions.appendChild(deleteBtn);
+
+      li.appendChild(span);
+      li.appendChild(actions);
+
+      taskList.appendChild(li);
+      taskInput.value = "";
+    }
+
+    // Optional: Press "Enter" to add task
+    taskInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        addTask();
+      }
+    });
